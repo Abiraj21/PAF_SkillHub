@@ -32,4 +32,17 @@ public class MealPlanService {
 
         return mealPlanRepository.save(mealPlan);
     }
+
+    public MealPlan updateMeal(Long mealPlanId, MealPlanDTO mealPlanDTO) {
+        MealPlan mealPlan = mealPlanRepository.findById(mealPlanId)
+                .orElseThrow(() -> new RuntimeException("No meal plan found."));
+        mealPlan.setMonday(mealPlanDTO.getMonday());
+        mealPlan.setTuesday(mealPlanDTO.getTuesday());
+        mealPlan.setWednesday(mealPlanDTO.getWednesday());
+        mealPlan.setThursday(mealPlanDTO.getThursday());
+        mealPlan.setFriday(mealPlanDTO.getFriday());
+        mealPlan.setSaturday(mealPlanDTO.getSaturday());
+        mealPlan.setSunday(mealPlanDTO.getSunday());
+        return mealPlanRepository.save(mealPlan);
+    }
 }
