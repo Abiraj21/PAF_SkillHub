@@ -1,6 +1,7 @@
 package com.Recipe_Management.Recipe_Management.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,5 +45,13 @@ public class MealPlanService {
         mealPlan.setSaturday(mealPlanDTO.getSaturday());
         mealPlan.setSunday(mealPlanDTO.getSunday());
         return mealPlanRepository.save(mealPlan);
+    }
+
+    public List<MealPlan> getPlansByUser(Long userId) {
+        return mealPlanRepository.findByUserId(userId);
+    }
+
+    public void deleteMealPlan(Long id) {
+        mealPlanRepository.deleteById(id);
     }
 }
