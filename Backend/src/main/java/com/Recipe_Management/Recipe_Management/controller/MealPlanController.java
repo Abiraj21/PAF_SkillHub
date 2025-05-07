@@ -3,6 +3,7 @@ package com.Recipe_Management.Recipe_Management.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +24,7 @@ public class MealPlanController {
     private MealPlanService mealPlanService;
     
     @PostMapping("/add")
-    public ResponseEntity<MealPlan> addMealPlan(@RequestBody MealPlanDTO dto) {
+    public ResponseEntity<MealPlan> addMealPlan(@RequestBody MealPlanDTO dto) throws java.io.IOException {
         try {
             MealPlan mealPlan = mealPlanService.addMealPlan(dto);
             return ResponseEntity.ok(mealPlan);
@@ -35,6 +36,12 @@ public class MealPlanController {
     @PutMapping("/update/{id}")
     public ResponseEntity<MealPlan> updateMealPlan(@RequestBody MealPlanDTO dto, @PathVariable Long id) {
         return ResponseEntity.ok(mealPlanService.updateMeal(id, dto));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        mealPlanService.deleteMealPlan(id);
+        return ResponseEntity.ok("Meal plan deleted.");
     }
 }
 
