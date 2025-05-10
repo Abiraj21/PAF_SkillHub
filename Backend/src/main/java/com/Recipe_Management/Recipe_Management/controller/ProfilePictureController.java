@@ -32,13 +32,13 @@ public class ProfilePictureController {
         try {
             pictureService.saveProfilePicture(userId, file);
             return ResponseEntity.ok("Profile picture uploaded successfully");
-        } cath (IOException e) {
+        } catch (IOException e) {
             return new ResponseEntity<>("Upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/get/{userId}")
-    public ResponseEntity<byte[]> getProfilePicture(PathVariable Long userId) {
+    public ResponseEntity<byte[]> getProfilePicture(@PathVariable Long userId) {
         try {
             byte[] image = pictureService.getProfilePicture(userId);
             String fileName = pictureService.getProfilePictureFileName(userId);
