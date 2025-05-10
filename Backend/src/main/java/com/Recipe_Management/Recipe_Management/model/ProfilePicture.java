@@ -18,6 +18,7 @@ public class ProfilePicture {
 
     private String fileName;
 
+    private LocalDateTime uploadTime;
 
     // Constructors
     public ProfilePicture() {}
@@ -54,6 +55,11 @@ public class ProfilePicture {
         this.id = id;
     }
 
+    public ProfilePicture(Long userId, String fileName) {
+        this.userId = userId;
+        this.fileName = fileName;
+        this.uploadTime = LocalDateTime.now();
+    }
 
     // Getters and Setters
 }
