@@ -3,9 +3,9 @@ PAF_Prorata_02
 Members.
 
 IT21118654 : Kailashwaran R.A.K.K - Cooking Technique Management
-IT19108346 : Manathunga I.D       - Recipe management
+IT20265342 : Manathunga I.D       - Recipe management
 IT19209630 : Yomal Sammikal       - Review & Rating Management
-IT21XXXXXX : Bingun Alahakoon     - Meal Planning Management
+IT19108346 : Bingun Alahakoon     - Meal Planning Management
 
 User Authentication 0Auth and User Registration functions Contributed by all 4 member.
 
