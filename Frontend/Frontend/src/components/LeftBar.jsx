@@ -35,6 +35,11 @@ export default function LeftBar() {
             className="text-blue-500" />
             <span className="text-gray-700">Friends</span>
           </div>
+          <div className="flex items-center space-x-2">
+            <FontAwesomeIcon icon={faUsers} 
+            className="text-green-500" />
+            <span className="text-gray-700">Groups</span>
+          </div>
         </div>
     </div>
     
