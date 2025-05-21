@@ -29,6 +29,14 @@ export default function LeftBar() {
         </div>
           <h2 className="mt-2 font-semibold">{firstName} {lastName}</h2>
         </div>
+        <div className="mt-6 space-y-4">
+          <div className="flex items-center space-x-2">
+            <FontAwesomeIcon icon={faUserFriends} 
+            className="text-blue-500" />
+            <span className="text-gray-700">Friends</span>
+          </div>
+        </div>
     </div>
+    
   );
 }
