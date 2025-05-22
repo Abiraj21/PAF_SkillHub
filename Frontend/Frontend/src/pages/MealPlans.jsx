@@ -138,39 +138,46 @@ export default function MealPlans() {
     <>
       <Nav />
       <div className="flex">
+        {/* Sidebar */}
         <div className="w-1/5 p-4 bg-gray-100 h-screen sticky top-0">
           <h2 className="text-lg font-semibold mb-4">Your Meal Plans</h2>
           <button onClick={() => setShowMealPlanModal(true)} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
             <FontAwesomeIcon icon={faPlus} className="mr-2 " /> New Plan
           </button>
           <nav className="mt-6 space-y-4">
-            <div className="flex items-center space-x-2 px-2 py-1 cursor-pointer hover:bg-black hover:text-white group">
+            <div className="flex items-center space-x-2 px-2 py-1  cursor-pointer hover:bg-black hover:text-white group">
               <FontAwesomeIcon icon={faUserFriends} />
-              <span>Friends</span>
+              <span >
+                Friends
+              </span>
             </div>
-            <div className="flex items-center space-x-2 px-2 py-1 cursor-pointer hover:bg-black hover:text-white group">
+            <div className="flex items-center space-x-2 px-2 py-1  cursor-pointer hover:bg-black hover:text-white group">
               <FontAwesomeIcon icon={faUsers} />
-              <span>Groups</span>
+              <span >
+                Groups
+              </span>
             </div>
-            <Link to="/recipe" className="flex items-center px-2 py-1 space-x-2 hover:bg-black hover:text-white group">
-              <FontAwesomeIcon icon={faUtensils} />
+            <Link to="/recipe" className="flex items-center px-2 py-1  space-x-2 hover:bg-black hover:text-white group">
+              <FontAwesomeIcon icon={faUtensils} /> 
               <span>Recipes</span>
             </Link>
-            <Link to="/techniques" className="flex items-center space-x-2 hover:bg-black px-2 py-1 hover:text-white group transition duration-450">
-              <FontAwesomeIcon icon={faBookOpen} />
+            <Link to="/techniques" className="flex items-center space-x-2 hover:bg-black px-2 py-1  hover:text-white group transition duration-450">
+              <FontAwesomeIcon icon={faBookOpen} /> 
               <span>Techniques</span>
             </Link>
             <Link to="/meals" className="flex items-center space-x-2 bg-black text-white px-2 py-1 rounded">
-              <FontAwesomeIcon icon={faClipboardList} />
+              <FontAwesomeIcon icon={faClipboardList} /> 
               <span>Meal Plans</span>
             </Link>
           </nav>
         </div>
+
+        {/* Main Content */}
         <div className="w-3/5 p-4 overflow-y-auto">
           <h2 className="text-2xl font-bold mb-4">Current Meal Plan</h2>
           {loading ? <p>Loading...</p> : currentMealPlan ? (
             <MealPlanCard plan={currentMealPlan} onDelete={handleDelete} onEdit={() => handleEditClick(currentMealPlan)} />
-          ) : 
+            ) : 
             <p>No meal plans found.</p>
           }
           {oldMealPlans.length > 0 && (
@@ -182,7 +189,24 @@ export default function MealPlans() {
             </>
           )}
         </div>
+        {/* Right Sidebar */}
+        <div className="w-1/5 p-4 bg-gray-50 h-screen sticky top-0">
+          <h3 className="font-semibold mb-4">Suggested Friends</h3>
+          {["Alice", "Bob", "Charlie"].map((name, idx) => (
+            <div key={idx} className="flex justify-between items-center mb-2">
+              <div className="flex items-center space-x-2">
+                <img src="https://via.placeholder.com/40" alt={name} className="w-10 h-10 rounded-full" />
+                <span>{name}</span>
+              </div>
+              <button className="bg-green-500 text-white px-2 py-1 rounded text-sm">
+                <FontAwesomeIcon icon={faUserPlus} />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Edit Modal */}
       {showEditModal && (
         <div className="fixed inset-0 bg-black/70 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg w-96">
@@ -211,6 +235,8 @@ export default function MealPlans() {
           </div>
         </div>
       )}
+
+      {/* Create Meal Plan Modal */}
       {showMealPlanModal && (
         <div className="fixed inset-0 bg-black/70 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg w-96">
