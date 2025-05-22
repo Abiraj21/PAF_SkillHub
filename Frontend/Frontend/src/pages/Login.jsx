@@ -50,6 +50,53 @@ const Login = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
 
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    if (!logEmail || !logPassword) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    const data = {
+      email: logEmail,
+      password: logPassword,
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/users/login/local', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        alert(result.message || 'Login failed!');
+        return;
+      }
+
+      if (!result.token) {
+        alert('Login failed: Check Email and Password');
+        return;
+      }
+
+      console.log('Data being sent:', data);
+      console.log('Data received:', result);
+      localStorage.setItem('token', result.token);
+      navigate('/profile');
+      setLogEmail('');
+      setLogPassword('');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Something went wrong: ' + error.message);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-center items-center h-screen bg-slate-50">
@@ -111,4 +158,4 @@ const Login = () => {
   );
 };
 
-export default IconButton;
+export default Login;
