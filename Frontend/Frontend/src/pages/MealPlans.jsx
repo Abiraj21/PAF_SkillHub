@@ -29,6 +29,36 @@ export default function MealPlans() {
   const currentUserId = Number(localStorage.getItem("id"));
   const token = localStorage.getItem("token");
 
+  useEffect(() => {
+    fetchMealPlans();
+    fetchRecipes();
+  }, []);
+
+  const fetchRecipes = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/recipes/all", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setRecipes(response.data);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
+  };
+
+  const fetchMealPlans = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/meal/getByUser/${currentUserId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const sortedPlans = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setMealPlans(sortedPlans);
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch meal plans:", error);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Nav />
