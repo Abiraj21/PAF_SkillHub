@@ -69,7 +69,28 @@ export default function UserProfilePage() {
     };
     fetchProfilePic();
   }, [token, userId]);
-  
+
+   useEffect(() => {
+    if (!token) return;
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/users/get-profile', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const { firstname, lastname, id, email, bio } = res.data.user;
+        setFirstName(firstname);
+        setLastName(lastname);
+        setBio(bio);
+        localStorage.setItem('id', id);
+        localStorage.setItem('email', email);
+      } catch (err) {
+        console.error('Error fetching profile data:', err);
+      }
+    };
+    fetchProfile();
+  }, [token]);
+
+
   return (
     <>
       <Nav />
