@@ -182,6 +182,47 @@ export default function UserProfilePage() {
             </Link>
           </nav>
         </div>
+        <div className="w-3/5 p-4">
+          <div className="bg-white p-4 rounded shadow mb-4">
+            <textarea
+              value={postText}
+              onChange={(e) => setPostText(e.target.value)}
+              placeholder="What's cooking today?"
+              className="w-full border rounded p-2 mb-2"
+            />
+            <div className="flex items-center justify-between">
+              <label className="flex items-center cursor-pointer space-x-2 text-blue-500">
+                <FontAwesomeIcon icon={faImage} />
+                <span>Add Image</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => setPostImage(e.target.files[0])}
+                />
+              </label>
+              <button
+                className="bg-blue-500 text-white px-4 py-1 rounded"
+              >
+                Post
+              </button>
+            </div>
+          </div>
+          <div className="space-y-4">
+            {posts.map((post, index) => (
+              <div key={index} className="bg-white p-4 rounded shadow">
+                <p className="mb-2">{post.text}</p>
+                {post.image && (
+                  <img
+                    src={post.image}
+                    alt="Post"
+                    className="max-h-60 w-full object-cover rounded"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );
