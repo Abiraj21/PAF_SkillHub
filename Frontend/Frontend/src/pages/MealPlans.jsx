@@ -72,44 +72,6 @@ export default function MealPlans() {
       }, {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       });
-      = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/recipes/all", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setRecipes(response.data);
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-    }
-  };
-
-  const fetchMealPlans = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/meal/getByUser/${currentUserId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const sortedPlans = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      setMealPlans(sortedPlans);
-      setLoading(false);
-    } catch (error) {
-      console.error("Failed to fetch meal plans:", error);
-      setLoading(false);
-    }
-  };
-
-  const handleSelectRecipe = (day, recipeId) => {
-    setSelectedRecipes(prev => ({ ...prev, [day]: recipeId }));
-  };
-
-  const handleSaveMealPlan = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://localhost:8080/meal/add", {
-        ...selectedRecipes,
-        userId: currentUserId,
-      }, {
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      });
       alert("Meal plan saved successfully!");
       setShowMealPlanModal(false);
       setSelectedRecipes({});
@@ -119,11 +81,61 @@ export default function MealPlans() {
     }
   };
 
+  const handleDelete = async (planId) => {
+    if (!window.confirm("Are you sure you want to delete this meal plan?")) return;
+    try {
+      await axios.delete(`http://localhost:8080/meal/delete/${planId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert("Meal Plan deleted!");
+      fetchMealPlans();
+    } catch (error) {
+      console.error("Failed to delete meal plan:", error);
+    }
+  };
+
+  const handleEditClick = (plan) => {
+    setEditingPlan(plan);
+    setEditSelectedRecipes({
+      monday: plan.monday || "",
+      tuesday: plan.tuesday || "",
+      wednesday: plan.wednesday || "",
+      thursday: plan.thursday || "",
+      friday: plan.friday || "",
+      saturday: plan.saturday || "",
+      sunday: plan.sunday || ""
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditChange = (day, value) => {
+    setEditSelectedRecipes(prev => ({ ...prev, [day]: value }));
+  };
+
+  const handleUpdateMealPlan = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:8080/meal/update/${editingPlan.id}`, {
+        ...editSelectedRecipes,
+        userId: currentUserId,
+      }, {
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+      alert("Meal plan updated!");
+      setShowEditModal(false);
+      setEditingPlan(null);
+      setEditSelectedRecipes({});
+      fetchMealPlans();
+    } catch (error) {
+      console.error("Failed to update meal plan", error);
+    }
+  };
+
   const currentMealPlan = mealPlans.length > 0 ? mealPlans[0] : null;
   const oldMealPlans = mealPlans.slice(1);
 
   return (
-   <>
+    <>
       <Nav />
       <div className="flex">
         <div className="w-1/5 p-4 bg-gray-100 h-screen sticky top-0">
@@ -157,7 +169,7 @@ export default function MealPlans() {
         <div className="w-3/5 p-4 overflow-y-auto">
           <h2 className="text-2xl font-bold mb-4">Current Meal Plan</h2>
           {loading ? <p>Loading...</p> : currentMealPlan ? (
-            <MealPlanCard plan={currentMealPlan} onDelete={() => {}} onEdit={() => {}} />
+            <MealPlanCard plan={currentMealPlan} onDelete={handleDelete} onEdit={() => handleEditClick(currentMealPlan)} />
           ) : 
             <p>No meal plans found.</p>
           }
@@ -165,22 +177,26 @@ export default function MealPlans() {
             <>
               <h2 className="text-2xl font-bold mt-8 mb-4">Old Meal Plans</h2>
               {oldMealPlans.map(plan => (
-                <MealPlanCard key={plan.id} plan={plan} onDelete={() => {}} onEdit={() => {}} />
+                <MealPlanCard key={plan.id} plan={plan} onDelete={handleDelete} onEdit={() => handleEditClick(plan)} />
               ))}
             </>
           )}
         </div>
       </div>
-      {showMealPlanModal && (
+      {showEditModal && (
         <div className="fixed inset-0 bg-black/70 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg w-96">
-            <h2 className="text-xl font-bold mb-4">Create Meal Plan</h2>
-            <form className="space-y-3">
-              {daysOfWeek.map(day => (
-                <div key={day}>
+            <button onClick={() => setShowEditModal(false)} className="absolute top-2 right-2">
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            <h2 className="text-xl font-bold mb-4">Edit Meal Plan</h2>
+            <form onSubmit={handleUpdateMealPlan} className="space-y-3">
+              {daysOfWeek.map((day, idx) => (
+                <div key={idx}>
                   <label className="block font-semibold mb-1 capitalize">{day}</label>
                   <select
-                    value={selectedRecipes[day] || ""}
+                    value={editSelectedRecipes[day] || ""}
+                    onChange={(e) => handleEditChange(day, e.target.value)}
                     className="w-full border p-2 rounded"
                   >
                     <option value="">Select Recipe</option>
@@ -190,10 +206,7 @@ export default function MealPlans() {
                   </select>
                 </div>
               ))}
-              <div className="flex justify-end space-x-2">
-                <button type="button" onClick={() => setShowMealPlanModal(false)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
-              </div>
+              <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Update</button>
             </form>
           </div>
         </div>
