@@ -121,10 +121,68 @@ export default function UserProfilePage() {
     fetchRecipes();
   }, []);
 
+  const openEditModal = () => {
+    setTempFirstName(firstName);
+    setTempLastName(lastName);
+    setShowModal(true);
+  };
+
   return (
     <>
       <Nav />
-      <div className="flex"></div>
+      <div className="flex">
+        <div className="w-1/5 p-4 bg-gray-100 h-screen sticky top-0">
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              <img
+                src={profilePicUrl}
+                alt="Profile"
+                className="rounded-full w-24 h-24 object-cover border-4 border-white shadow"
+              />
+              <button
+                onClick={() => setShowPicModal(true)}
+                className="absolute bottom-0 right-0 bg-white text-gray-800 p-1 rounded-full shadow hover:bg-gray-200"
+                title="Edit Picture"
+              >
+                <FontAwesomeIcon icon={faEdit} />
+              </button>
+            </div>
+            <div className="flex flex-col items-center mt-2">
+              <div className="flex items-center">
+                <h2 className="font-semibold mr-2">{firstName} {lastName}</h2>
+                <button
+                  onClick={openEditModal}
+                  className="text-black p-2 rounded-full cursor-pointer"
+                >
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+              </div>
+              <div className="max-w-xs border-gray-300 rounded-md p-2 text-sm text-gray-700 break-words">
+                <p className="text-center font-semibold text-lg">{bio}</p>
+              </div>
+            </div>
+          </div>
+          <nav className="mt-6 space-y-4">
+            <div className="flex items-center space-x-2 cursor-pointer hover:bg-black px-2 py-1 hover:text-white group transition duration-450">
+              <FontAwesomeIcon icon={faUserFriends} />
+              <span>Friends</span>
+            </div>
+            <div className="flex items-center space-x-2 cursor-pointer hover:bg-black px-2 py-1 hover:text-white group transition duration-450">
+              <FontAwesomeIcon icon={faUsers} />
+              <span>Groups</span>
+            </div>
+            <Link to="/recipe" className="flex items-center space-x-2 hover:bg-black px-2 py-1 hover:text-white group transition duration-450">
+              <FontAwesomeIcon icon={faUtensils} /> <span>Recipes</span>
+            </Link>
+            <Link to="/techniques" className="flex items-center space-x-2 hover:bg-black px-2 py-1 hover:text-white group transition duration-450">
+              <FontAwesomeIcon icon={faBookOpen} /> <span>Techniques</span>
+            </Link>
+            <Link to="/meals" className="flex items-center space-x-2 hover:bg-black px-2 py-1 hover:text-white group transition duration-450">
+              <FontAwesomeIcon icon={faClipboardList} /> <span>Meal Plans</span>
+            </Link>
+          </nav>
+        </div>
+      </div>
     </>
   );
 }
