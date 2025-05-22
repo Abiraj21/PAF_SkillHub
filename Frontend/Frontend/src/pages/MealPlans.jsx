@@ -111,30 +111,34 @@ export default function MealPlans() {
           )}
         </div>
       </div>
-    </>
-  );
-}
-
-function MealPlanCard({ plan, onDelete, onEdit }) {
-  return (
-    <div className="bg-white p-4 rounded shadow mb-4">
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg font-semibold">{new Date(plan.createdAt).toLocaleDateString()}</h3>
-        <div className="space-x-2">
-          <button onClick={() => onEdit(plan)} className="text-blue-500 hover:underline">
-            <FontAwesomeIcon icon={faEdit} />
-          </button>
-          <button onClick={() => onDelete(plan.id)} className="text-red-500 hover:underline">
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
+      {showMealPlanModal && (
+        <div className="fixed inset-0 bg-black/70 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Create Meal Plan</h2>
+            <form className="space-y-3">
+              {daysOfWeek.map(day => (
+                <div key={day}>
+                  <label className="block font-semibold mb-1 capitalize">{day}</label>
+                  <select
+                    value={selectedRecipes[day] || ""}
+                    className="w-full border p-2 rounded"
+                  >
+                    <option value="">Select Recipe</option>
+                    {recipes.map(recipe => (
+                      <option key={recipe.id} value={recipe.recipeName}>{recipe.recipeName}</option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+              <div className="flex justify-end space-x-2">
+                <button type="button" onClick={() => setShowMealPlanModal(false)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-      <ul className="text-sm text-gray-700 space-y-1">
-        {Object.entries(plan).filter(([key]) => daysOfWeek.includes(key)).map(([day, recipe], idx) => (
-          <li key={idx} className="capitalize">{day}: {recipe}</li>
-        ))}
-      </ul>
-    </div>
+      )}
+    </>
   );
 }
 
