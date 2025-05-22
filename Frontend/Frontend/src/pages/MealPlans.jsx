@@ -59,10 +59,58 @@ export default function MealPlans() {
     }
   };
 
+  const currentMealPlan = mealPlans.length > 0 ? mealPlans[0] : null;
+  const oldMealPlans = mealPlans.slice(1);
+
   return (
-    <>
+   <>
       <Nav />
-      <div className="flex"></div>
+      <div className="flex">
+        <div className="w-1/5 p-4 bg-gray-100 h-screen sticky top-0">
+          <h2 className="text-lg font-semibold mb-4">Your Meal Plans</h2>
+          <button onClick={() => setShowMealPlanModal(true)} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
+            <FontAwesomeIcon icon={faPlus} className="mr-2 " /> New Plan
+          </button>
+          <nav className="mt-6 space-y-4">
+            <div className="flex items-center space-x-2 px-2 py-1 cursor-pointer hover:bg-black hover:text-white group">
+              <FontAwesomeIcon icon={faUserFriends} />
+              <span>Friends</span>
+            </div>
+            <div className="flex items-center space-x-2 px-2 py-1 cursor-pointer hover:bg-black hover:text-white group">
+              <FontAwesomeIcon icon={faUsers} />
+              <span>Groups</span>
+            </div>
+            <Link to="/recipe" className="flex items-center px-2 py-1 space-x-2 hover:bg-black hover:text-white group">
+              <FontAwesomeIcon icon={faUtensils} />
+              <span>Recipes</span>
+            </Link>
+            <Link to="/techniques" className="flex items-center space-x-2 hover:bg-black px-2 py-1 hover:text-white group transition duration-450">
+              <FontAwesomeIcon icon={faBookOpen} />
+              <span>Techniques</span>
+            </Link>
+            <Link to="/meals" className="flex items-center space-x-2 bg-black text-white px-2 py-1 rounded">
+              <FontAwesomeIcon icon={faClipboardList} />
+              <span>Meal Plans</span>
+            </Link>
+          </nav>
+        </div>
+        <div className="w-3/5 p-4 overflow-y-auto">
+          <h2 className="text-2xl font-bold mb-4">Current Meal Plan</h2>
+          {loading ? <p>Loading...</p> : currentMealPlan ? (
+            <MealPlanCard plan={currentMealPlan} onDelete={() => {}} onEdit={() => {}} />
+          ) : 
+            <p>No meal plans found.</p>
+          }
+          {oldMealPlans.length > 0 && (
+            <>
+              <h2 className="text-2xl font-bold mt-8 mb-4">Old Meal Plans</h2>
+              {oldMealPlans.map(plan => (
+                <MealPlanCard key={plan.id} plan={plan} onDelete={() => {}} onEdit={() => {}} />
+              ))}
+            </>
+          )}
+        </div>
+      </div>
     </>
   );
 }
