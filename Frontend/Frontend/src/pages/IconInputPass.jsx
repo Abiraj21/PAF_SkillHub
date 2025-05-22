@@ -4,9 +4,15 @@ export default function IconInputPass() {
   return (
     <div className='flex justify-left items-center w-full h-10 shadow mt-4'>
         <div className='icon_wrapper flex absolute w-14 justify-center items-center'>
-        <span className='text-gray-500 opacity-80 text-xl'></span>
+        <span className='text-gray-500 opacity-80 text-xl'>{children}</span>
       </div>
-      <input className='w-full h-full pl-14'/>
+      <input
+        type={text}
+        placeholder={placeholder}
+        className='w-full h-full pl-14'
+        value={value}
+        onChange={onChange}
+        />
     </div>
   );
 }
