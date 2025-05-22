@@ -90,6 +90,36 @@ export default function UserProfilePage() {
     fetchProfile();
   }, [token]);
 
+  const fetchRecipes = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/recipes/all", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRecipes(response.data);
+      fetchAllReviews(response.data);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
+  };
+
+  const fetchAllReviews = async (recipes) => {
+    const allReviews = {};
+    for (const recipe of recipes) {
+      try {
+        const res = await axios.get(`http://localhost:8080/reviews/${recipe.id}`);
+        allReviews[recipe.id] = res.data;
+      } catch (error) {
+        console.error("Error fetching reviews for recipe " + recipe.id, error);
+      }
+    }
+    setReviewsByRecipeId(allReviews);
+  };
+
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
 
   return (
     <>
