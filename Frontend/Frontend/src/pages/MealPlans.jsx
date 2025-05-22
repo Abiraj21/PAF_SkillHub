@@ -59,6 +59,28 @@ export default function MealPlans() {
     }
   };
 
+  const handleSelectRecipe = (day, recipeId) => {
+    setSelectedRecipes(prev => ({ ...prev, [day]: recipeId }));
+  };
+
+  const handleSaveMealPlan = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:8080/meal/add", {
+        ...selectedRecipes,
+        userId: currentUserId,
+      }, {
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+      alert("Meal plan saved successfully!");
+      setShowMealPlanModal(false);
+      setSelectedRecipes({});
+      fetchMealPlans();
+    } catch (error) {
+      console.error("Error saving meal plan:", error);
+    }
+  };
+
   const currentMealPlan = mealPlans.length > 0 ? mealPlans[0] : null;
   const oldMealPlans = mealPlans.slice(1);
 
