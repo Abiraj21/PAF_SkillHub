@@ -51,6 +51,23 @@ const Login = () => {
   const [passwordMatch, setPasswordMatch] = useState(true);
 
 
+  useEffect(() => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      setEmailError('Invalid email format');
+    } else {
+      setEmailError('');
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (confirmPassword && password !== confirmPassword) {
+      setPasswordMatch(false);
+    } else {
+      setPasswordMatch(true);
+    }
+  }, [password, confirmPassword]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -91,6 +108,50 @@ const Login = () => {
       navigate('/profile');
       setLogEmail('');
       setLogPassword('');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Something went wrong: ' + error.message);
+    }
+  };
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    if (!email || !firstName || !lastName || !password || !confirmPassword) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    if (emailError || !passwordMatch) {
+      alert('Please fix errors before submitting');
+      return;
+    }
+
+    const data = {
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      password: password,
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert('Signup successful!');
+        console.log('Data being sent:', data);
+        setShowSignup(false);
+      } else {
+        alert(result.message || 'Signup failed!');
+      }
     } catch (error) {
       console.error('Error:', error);
       alert('Something went wrong: ' + error.message);
@@ -154,6 +215,66 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {showSignup && (
+        <div className="fixed inset-0 bg-black bg-opacity-10 flex justify-center items-center z-50">
+          <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+            <button onClick={() => setShowSignup(false)} className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl">
+              ×
+            </button>
+            <h2 className="text-2xl font-semibold mb-4 text-center">
+              Create an Account
+            </h2>
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full mb-2 px-4 py-2 border rounded"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {emailError && 
+              <p className="text-red-500 text-sm">{emailError}</p>
+            }
+            <input
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full mb-2 px-4 py-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              className="w-full mb-2 px-4 py-2 border rounded"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full mb-2 px-4 py-2 border rounded"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              className="w-full mb-2 px-4 py-2 border rounded"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            {!passwordMatch && 
+              <p className="text-red-500 text-sm">Passwords do not match</p>
+            }
+            <button
+              onClick={handleSignup}
+              disabled={!email || !firstName || !lastName || !password || !confirmPassword || emailError || !passwordMatch}
+              className={`w-full py-2 rounded font-semibold ${emailError || !passwordMatch ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'}`}
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
