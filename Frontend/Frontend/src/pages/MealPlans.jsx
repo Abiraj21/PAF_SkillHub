@@ -90,4 +90,27 @@ function MealPlanCard({ plan, onDelete, onEdit }) {
   );
 }
 
+function MealPlanCard({ plan, onDelete, onEdit }) {
+  return (
+    <div className="bg-white p-4 rounded shadow mb-4">
+      <div className="flex justify-between items-center mb-2">
+        <h3 className="text-lg font-semibold">{new Date(plan.createdAt).toLocaleDateString()}</h3>
+        <div className="space-x-2">
+          <button onClick={() => onEdit(plan)} className="text-blue-500 hover:underline">
+            <FontAwesomeIcon icon={faEdit} />
+          </button>
+          <button onClick={() => onDelete(plan.id)} className="text-red-500 hover:underline">
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        </div>
+      </div>
+      <ul className="text-sm text-gray-700 space-y-1">
+        {Object.entries(plan).filter(([key]) => daysOfWeek.includes(key)).map(([day, recipe], idx) => (
+          <li key={idx} className="capitalize">{day}: {recipe}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
