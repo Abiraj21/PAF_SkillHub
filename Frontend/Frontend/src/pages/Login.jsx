@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LoginLogo from '../assets/register.png';
 import Logo from '../assets/logo2.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faKey, faLock } from '@fortawesome/free-solid-svg-icons';
 import IconInputEmail from './IconInputEmail';
 import IconInputPass from './IconInputPass';
 
@@ -40,16 +41,15 @@ function IconButtonGit({ children, onClick, text, iconColor, ...props }) {
 const Login = () => {
   const navigate = useNavigate();
   const [showSignup, setShowSignup] = useState(false);
+  const [email, setEmail] = useState('');
   const [logEmail, setLogEmail] = useState('');
   const [logPassword, setLogPassword] = useState('');
-  const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
-
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -68,11 +68,25 @@ const Login = () => {
     }
   }, [password, confirmPassword]);
 
+  // Handle Google login redirect
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const token = queryParams.get('token');
+    if (token) {
+      localStorage.setItem('token', token);
+      navigate('/profile');
+    }
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!logEmail || !logPassword) {
       alert('Please fill in all fields');
+      return;
+    }
+    if (emailError) {
+      alert('Please fix errors before submitting');
       return;
     }
 
@@ -97,11 +111,13 @@ const Login = () => {
         return;
       }
 
+      // If token is missing in response, don't proceed
       if (!result.token) {
         alert('Login failed: Check Email and Password');
         return;
       }
 
+      // All good — proceed to login
       console.log('Data being sent:', data);
       console.log('Data received:', result);
       localStorage.setItem('token', result.token);
@@ -148,7 +164,7 @@ const Login = () => {
       if (response.ok) {
         alert('Signup successful!');
         console.log('Data being sent:', data);
-        setShowSignup(false);
+        setShowSignup(false); // hide modal
       } else {
         alert(result.message || 'Signup failed!');
       }
@@ -156,6 +172,14 @@ const Login = () => {
       console.error('Error:', error);
       alert('Something went wrong: ' + error.message);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+  };
+
+  const handleGitLogin = () => {
+    window.location.href = 'http://localhost:8080/users/login/github';
   };
 
   return (
@@ -169,10 +193,10 @@ const Login = () => {
             <h1 className="text-3xl font-semibold mt-6 opacity-80 text-natural-900">Login to your account</h1>
             <p className="text-blac opacity-60 mt-3">Select method to log in:</p>
             <div className="outh-btns flex gap-x-5 justify-between mt-5">
-              <IconButton text="Google" iconColor="#fff">
+              <IconButton text="Google" iconColor="#fff" onClick={handleGoogleLogin}>
                 <FontAwesomeIcon icon={faGoogle} />
               </IconButton>
-              <IconButtonGit text="Github" iconColor="#fff">
+              <IconButtonGit text="Github" iconColor="#fff" onClick={handleGitLogin}>
                 <FontAwesomeIcon icon={faGithub} />
               </IconButtonGit>
             </div>
@@ -204,7 +228,7 @@ const Login = () => {
                 Create an account
               </a>
             </div>
-            <button className="border shadow w-full py-3 rounded mt-5 font-semibold text-xl hover:bg-black hover:text-white cursor-pointer">
+            <button onClick={handleLogin} className="border shadow w-full py-3 rounded mt-5 font-semibold text-xl hover:bg-black hover:text-white cursor-pointer">
               Login
             </button>
           </div>
@@ -219,7 +243,7 @@ const Login = () => {
         <div className="fixed inset-0 bg-black bg-opacity-10 flex justify-center items-center z-50">
           <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
             <button onClick={() => setShowSignup(false)} className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl">
-              ×
+              &times;
             </button>
             <h2 className="text-2xl font-semibold mb-4 text-center">
               Create an Account
@@ -265,6 +289,7 @@ const Login = () => {
             {!passwordMatch && 
               <p className="text-red-500 text-sm">Passwords do not match</p>
             }
+
             <button
               onClick={handleSignup}
               disabled={!email || !firstName || !lastName || !password || !confirmPassword || emailError || !passwordMatch}
