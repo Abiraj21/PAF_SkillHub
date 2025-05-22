@@ -223,6 +223,26 @@ export default function UserProfilePage() {
             ))}
           </div>
         </div>
+        <div className="w-1/5 p-4 bg-gray-50 h-screen sticky top-0">
+          <h3 className="font-semibold mb-4">Suggested Friends</h3>
+          <div className="space-y-4">
+            {["Alice", "Bob", "Charlie"].map((name, idx) => (
+              <div key={idx} className="flex justify-between items-center">
+                <div className="flex items-center space-x-2">
+                  <img
+                    src={`https://avatars.dicebear.com/api/avataaars/${name}.svg`}
+                    alt={name}
+                    className="rounded-full w-10 h-10"
+                  />
+                  <span>{name}</span>
+                </div>
+                <button className="bg-green-500 text-white px-2 py-1 rounded text-sm">
+                  <FontAwesomeIcon icon={faUserPlus} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );
