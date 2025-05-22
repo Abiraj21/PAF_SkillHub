@@ -40,6 +40,13 @@ export default function LeftBar() {
             className="text-green-500" />
             <span className="text-gray-700">Groups</span>
           </div>
+          <Link to="/recipe">
+          <div className="flex items-center space-x-2 mt-2 cursor-pointer">
+            <FontAwesomeIcon icon={faUtensils} 
+            className="text-red-500" />
+            <span className="text-gray-700">Recipes</span>
+          </div>
+          </Link>
         </div>
     </div>
     
