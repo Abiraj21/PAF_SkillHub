@@ -5,8 +5,7 @@ import { faBars, faBell, faEnvelope, faHome, faSearch, faUser, faRightFromBracke
 import Logo from '../assets/logo2.jpg';
 
 export default function Nav() {
-  return (
-    <nav className="bg-white shadow-md px-4 py-5">
+  return (<nav className="bg-white shadow-md px-4 py-5">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-9">
           <Link to="/" onClick={() => {
@@ -15,6 +14,17 @@ export default function Nav() {
           }}>
             <img src={Logo} alt="Skillhub logo" className="w-30 h-auto float-left" />
           </Link>
+          <Link to="/profile">
+            <FontAwesomeIcon icon={faUser} className="text-xl text-gray-600 hover:text-blue-500" />
+          </Link>
+          <div className="flex items-center border border-gray-300 rounded-full px-3 py-1">
+            <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
+            <input
+              type="search"
+              placeholder="Search..."
+              className="outline-none text-sm w-full"
+            />
+          </div>
         </div>
       </div>
     </nav>
