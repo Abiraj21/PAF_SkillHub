@@ -72,6 +72,44 @@ export default function MealPlans() {
       }, {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       });
+      = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/recipes/all", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setRecipes(response.data);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
+  };
+
+  const fetchMealPlans = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/meal/getByUser/${currentUserId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const sortedPlans = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setMealPlans(sortedPlans);
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch meal plans:", error);
+      setLoading(false);
+    }
+  };
+
+  const handleSelectRecipe = (day, recipeId) => {
+    setSelectedRecipes(prev => ({ ...prev, [day]: recipeId }));
+  };
+
+  const handleSaveMealPlan = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:8080/meal/add", {
+        ...selectedRecipes,
+        userId: currentUserId,
+      }, {
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
       alert("Meal plan saved successfully!");
       setShowMealPlanModal(false);
       setSelectedRecipes({});
@@ -143,6 +181,34 @@ export default function MealPlans() {
                   <label className="block font-semibold mb-1 capitalize">{day}</label>
                   <select
                     value={selectedRecipes[day] || ""}
+                    className="w-full border p-2 rounded"
+                  >
+                    <option value="">Select Recipe</option>
+                    {recipes.map(recipe => (
+                      <option key={recipe.id} value={recipe.recipeName}>{recipe.recipeName}</option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+              <div className="flex justify-end space-x-2">
+                <button type="button" onClick={() => setShowMealPlanModal(false)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {showMealPlanModal && (
+        <div className="fixed inset-0 bg-black/70 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Create Meal Plan</h2>
+            <form onSubmit={handleSaveMealPlan} className="space-y-3">
+              {daysOfWeek.map(day => (
+                <div key={day}>
+                  <label className="block font-semibold mb-1 capitalize">{day}</label>
+                  <select
+                    value={selectedRecipes[day] || ""}
+                    onChange={(e) => handleSelectRecipe(day, e.target.value)}
                     className="w-full border p-2 rounded"
                   >
                     <option value="">Select Recipe</option>
