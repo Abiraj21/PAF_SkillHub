@@ -52,6 +52,24 @@ export default function UserProfilePage() {
 
   const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
+  useEffect(() => {
+    const fetchProfilePic = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/profile-picture/get/${userId}`, {
+          responseType: 'blob',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const imageUrl = URL.createObjectURL(response.data);
+        setProfilePicUrl(imageUrl);
+      } catch (error) {
+        console.error('Error fetching profile picture:', error);
+      }
+    };
+    fetchProfilePic();
+  }, [token, userId]);
+  
   return (
     <>
       <Nav />
