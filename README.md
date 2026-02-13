@@ -132,4 +132,9 @@ I was responsible for designing and implementing the Cooking Technique Library f
 
 This module helps users enhance their cooking knowledge and supports skill development through structured learning resources.
 
-🎨 User-friendly and responsive UI
+<img width="1919" height="868" alt="image" src="https://github.com/user-attachments/assets/8505159c-0639-4c2a-8f40-47d4d1b57e55" />
+<img width="1023" height="470" alt="image" src="https://github.com/user-attachments/assets/1ed8742e-d051-4a47-98af-2ca8270c3e66" />
+<img width="1036" height="477" alt="image" src="https://github.com/user-attachments/assets/1ad4a9f6-8694-4717-803f-6268a4f3c510" />
+<img width="992" height="501" alt="image" src="https://github.com/user-attachments/assets/4974edc0-3557-41a4-85fc-839c333acede" />
+<img width="908" height="414" alt="image" src="https://github.com/user-attachments/assets/7cb8dc50-46b9-4235-9f36-6a7d3c45e78a" />
+
