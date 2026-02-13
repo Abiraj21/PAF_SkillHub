@@ -19,83 +19,64 @@ Create an engaging social environment for food lovers
 
 👤 User Management & Authentication
 
-User registration and login using OAuth 2.0
-
-Profile management
-
-Follow and interact with other users
+1. User registration and login using OAuth 2.0
+2. Profile management
+3. Follow and interact with other users
 
 📖 Recipe Management
 
-Create, update, and delete recipes
-
-Upload ingredients, steps, images, and videos
-
-Browse and search recipes shared by others
+1. Create, update, and delete recipes
+2. Upload ingredients, steps, images, and videos
+3. Browse and search recipes shared by others
 
 🧑‍🍳 Cooking Technique Library
 
-Explore cooking tutorials and techniques
-
-Filter techniques based on categories and skill levels
-
-Bookmark favorite techniques for quick access
+1. Explore cooking tutorials and techniques
+2. Filter techniques based on categories and skill levels
+3. Bookmark favorite techniques for quick access
 
 🗓️ Meal Planning
 
-Create personalized meal plans
-
-Schedule meals by date and time
-
-Automatically generate grocery lists
+1. Create personalized meal plans
+2. Schedule meals by date and time
+3. Automatically generate grocery lists
 
 ⭐ Ratings and Reviews
 
-Rate recipes
-
-Provide written reviews
-
-View community feedback
+1. Rate recipes
+2. Provide written reviews
+3. View community feedback
 
 💬 User Engagement
 
-Like and comment on recipes and posts
-
-Manage user interactions
-
-Real-time notifications
+1. Like and comment on recipes and posts
+2. Manage user interactions
+3. Real-time notifications
 
 🏗️ System Architecture
 
 The application follows a Microservices Architecture to ensure scalability, performance, and maintainability.
 
-Client Layer
+1. Client Layer
 
 React Web Application
-
 Mobile responsive interface
 
-API Gateway
+2. API Gateway
 
 Handles authentication and request routing
-
 Implements rate limiting and security
 
-Service Layer
+3. Service Layer
 
 User Management Service
-
 Recipe Management Service
-
 Cooking Technique Service
-
 Meal Planning Service
-
 Review & Rating Service
-
 Notification Service
 
-Data Storage
+5. Data Storage
 
 MySQL database for structured data storage
 
@@ -106,71 +87,49 @@ The backend uses RESTful APIs to manage communication between the frontend and d
 Supported HTTP Methods
 
 GET – Retrieve data
-
 POST – Create new data
-
 DELETE – Remove data
-
 All data communication is handled using JSON format.
 
 🛠️ Technologies & Software Used
+
 Frontend
 
-React.js
-
-HTML
-
-CSS
-
-JavaScript
+1. React.js
+2. HTML
+3. CSS
+4. JavaScript
 
 Backend
 
-REST API Architecture
-
-Node.js / Express (if applicable – update if different)
+1. REST API Architecture
+2. Node.js / Express (if applicable – update if different)
 
 Database
 
-MySQL
+1. MySQL
 
 Authentication & External Services
 
-OAuth 2.0 (Google / Facebook login)
-
-Email notification services
+1. OAuth 2.0 (Google / Facebook login)
+2. Email notification services
 
 Development Tools
 
-GitHub (Version Control)
-
-Postman (API Testing)
-
-OpenAPI / Swagger (API Documentation)
+1. GitHub (Version Control)
+2. Postman (API Testing)
+3. OpenAPI / Swagger (API Documentation)
 
 👨‍💻 My Contribution
 Cooking Technique Library Module
 
 I was responsible for designing and implementing the Cooking Technique Library feature which allows users to:
 
-Browse cooking techniques and tutorials
-
-View step-by-step instructions with multimedia content
-
-Filter techniques by category and skill level
-
-Bookmark techniques for quick reference
+1. Browse cooking techniques and tutorials
+2. View step-by-step instructions with multimedia content
+3. Filter techniques by category and skill level
+4. Bookmark techniques for quick reference
 
 This module helps users enhance their cooking knowledge and supports skill development through structured learning resources.
-
-📊 Non-Functional Requirements
-
-🔒 Security using OAuth 2.0 authentication
-
-⚡ High performance with fast response times
-
-📈 Scalability to support increasing users
-
-✅ High availability and reliability
 
 🎨 User-friendly and responsive UI
