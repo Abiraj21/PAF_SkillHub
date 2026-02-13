@@ -1,4 +1,4 @@
-PAF_Prorata_02
+PAF_SkillHub
 
 Members.
 
@@ -18,3 +18,4 @@ Tools Used for the Application
 Frontend - Reactjs
 Backend  - SpringBoot
 Database - MYSQL Database
+
